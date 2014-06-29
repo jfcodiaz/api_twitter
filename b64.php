@@ -13,11 +13,18 @@ function getConnectionWithAccessToken($oauth_token, $oauth_token_secret) {
   $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $oauth_token, $oauth_token_secret);
   return $connection;
 }
-$acces_token = [
-    'oauth_token' => '21595657-xxJRFnVQY3xjztsXTE7OFQ5nlRUeY5cVaFYWj8bbU',
-    'oauth_token_secret' => 'qaNSVQ901yF6o7rf1v9oJeQYmPUPEf0WzhZbquA6E477m'
-];
- 
+
 $connection = getConnectionWithAccessToken($acces_token['oauth_token'], $acces_token['oauth_token_secret']);
-$content = $connection->get("statuses/home_timeline");
-var_dump($content);
+//$content = $connection->get("statuses/home_timeline");
+
+
+//$content = $connection->get("geo/search",[
+//    "query" => "mexico"
+//]);
+$content = $connection->get("trends/place",[
+    "id" => "23424900"
+]);
+
+
+header("content-type:application/json");
+echo json_encode($content);
