@@ -9,6 +9,9 @@
 //echo base64_encode('xvz1evFS4wEEPTGEFPHBog:L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg');
 include "./twitteroauth-0.2.0-beta3/twitteroauth/twitteroauth.php";
 include "./twitteroauth-0.2.0-beta3/config.php";
+include "access_token.php";
+
+
 function getConnectionWithAccessToken($oauth_token, $oauth_token_secret) {
   $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $oauth_token, $oauth_token_secret);
   return $connection;
