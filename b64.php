@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,14 +20,29 @@ function getConnectionWithAccessToken($oauth_token, $oauth_token_secret) {
 $connection = getConnectionWithAccessToken($acces_token['oauth_token'], $acces_token['oauth_token_secret']);
 //$content = $connection->get("statuses/home_timeline");
 
-
+//header("content-type:text/plain");
 //$content = $connection->get("geo/search",[
 //    "query" => "mexico"
 //]);
-$content = $connection->get("trends/place",[
-    "id" => "23424900"
+if(!isset($_SESSION['trends'])) {
+    $_SESSION['trends'] = $content = $connection->get("trends/place",[
+        "id" => "23424900"
+    ]);    
+} else {
+    $content = $_SESSION['trends']; 
+}
+$q = $content[0]->trends[0]->name;
+$content = $connection->get("search/tweets",[
+    "q" => $q,
+    "count" => 100
 ]);
+//var_dump($content);
+//foreach($content[0]->trends as $trend){
+//    echo $trend->name."<br/>";
+//}
+foreach ($content->statuses as $statu) {
+//    echo $statu->text."<br/>";
+    echo $statu->user->screen_name."<br/>";
+}
 
-
-header("content-type:application/json");
-echo json_encode($content);
+//echo json_encode($content);
