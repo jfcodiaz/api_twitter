@@ -17,10 +17,11 @@ function getConnectionWithAccessToken($oauth_token, $oauth_token_secret) {
   return $connection;
 }
 
-$connection = getConnectionWithAccessToken($acces_token['oauth_token'], $acces_token['oauth_token_secret']);
+$connection = getConnectionWithAccessToken($access_token['oauth_token'], $access_token['oauth_token_secret']);
 //$content = $connection->get("statuses/home_timeline");
 
-//header("content-type:text/plain");
+//header("content-type:text/plain; charset=UTF-8");
+header("content-type:application/javascript; charset=UTF-8");
 //$content = $connection->get("geo/search",[
 //    "query" => "mexico"
 //]);
@@ -31,18 +32,20 @@ if(!isset($_SESSION['trends'])) {
 } else {
     $content = $_SESSION['trends']; 
 }
+
+//var_dump($content);
+//foreach($content[0]->trends as $trend){
+//    echo $trend->name."\n";
+//}
+//echo '---------------------'.PHP_EOL;
 $q = $content[0]->trends[0]->name;
 $content = $connection->get("search/tweets",[
     "q" => $q,
-    "count" => 100
+    "count" => 50
 ]);
-//var_dump($content);
-//foreach($content[0]->trends as $trend){
-//    echo $trend->name."<br/>";
-//}
 foreach ($content->statuses as $statu) {
 //    echo $statu->text."<br/>";
-    echo $statu->user->screen_name."<br/>";
+//    echo $statu->user->screen_name." => ".$statu->text."\n";
 }
 
-//echo json_encode($content);
+echo $_GET['callback'].'('.json_encode($content).');';
